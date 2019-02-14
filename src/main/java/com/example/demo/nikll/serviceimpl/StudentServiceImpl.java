@@ -21,7 +21,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     StudentDao studentDao;
 
-    public void out(){
+    public StudentServiceImpl(){
         System.out.println("service 层的方法调用执行");
     }
 

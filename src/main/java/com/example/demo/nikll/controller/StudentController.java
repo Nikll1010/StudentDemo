@@ -4,8 +4,11 @@ package com.example.demo.nikll.controller;
 import com.example.demo.nikll.entity.Student;
 import com.example.demo.nikll.service.StudentService;
 import com.example.demo.nikll.util.Page;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,12 +27,20 @@ import java.util.List;
  */
 @Controller
 public class StudentController {
-    public void out(){
+    public StudentController(){
         System.out.println("Controller 层的方法调用执行");
     }
+    private static final Logger log = LoggerFactory.getLogger(StudentController.class);
 
     @Autowired
     private StudentService studentService;
+
+    @RequestMapping("/name")
+    public String hello(Model model) {
+        String name = "jiangbei";
+        model.addAttribute("name", name);
+        return "listStudent";
+    }
 
 //    @Autowired
 //    Student student;

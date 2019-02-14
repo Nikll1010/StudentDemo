@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!DOCTYPE html >
 
 
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
         <script type="text/javascript"
                 src="/static/js/jquery-3.3.1/jquery-3.3.1.min.js"></script>
@@ -11,7 +11,7 @@
         <script
                 src="/static/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 
-        <title>学生管理页面 - 首页</title>
+        <title>学生</title>
 
     <script>
         $(function () {
@@ -23,6 +23,9 @@
 </head>
 
 <body>
+
+<!--/*@thymesVar id="name" type="Java"*/-->
+<p th:text="'Hello!!!, ' + ${name} + '!'">3333</p>
 
 <div class="listDIV">
     <table class="table table-striped table-bordered table-hover table-condensed">
@@ -39,10 +42,11 @@
             <th>编辑</th>
             <th>删除</th>
         </tr>
+
         </thead>
 
         <tbody>
-        <c:forEach items="${students}" var="s" varStatus="status">
+        <th:forEach items="${students}" var="s" varStatus="status">
             <tr>
                 <td>${s.student_id}</td>
                 <td>${s.name}</td>
@@ -53,7 +57,7 @@
                 <td><a href="/editStudent?id=${s.id}"><span class="glyphicon glyphicon-edit"></span> </a></td>
                 <td><a href="/deleteStudent?id=${s.id}"><span class="glyphicon glyphicon-trash"></span> </a></td>
             </tr>
-        </c:forEach>
+        </th:forEach>
 
         </tbody>
     </table>
@@ -61,36 +65,36 @@
 
 <nav class="pageDIV">
     <ul class="pagination">
-        <li <c:if test="${!page.hasPreviouse}">class="disabled"</c:if>>
+        <li <th:if test="${!page.hasPreviouse}">class="disabled"</th:if>>
             <a href="?page.start=0">
                 <span>«</span>
             </a>
         </li>
 
-        <li <c:if test="${!page.hasPreviouse}">class="disabled"</c:if>>
+        <li <th:if test="${!page.hasPreviouse}">class="disabled"</th:if>>
             <a href="?page.start=${page.start-page.count}">
                 <span>‹</span>
             </a>
         </li>
 
-        <c:forEach begin="0" end="${page.totalPage-1}" varStatus="status">
+        <th:forEach begin="0" end="${page.totalPage-1}" varStatus="status">
 
-            <c:if test="${status.count*page.count-page.start<=30 && status.count*page.count-page.start>=-10}">
-                <li <c:if test="${status.index*page.count==page.start}">class="disabled"</c:if>>
+            <th:if test="${status.count*page.count-page.start<=30 && status.count*page.count-page.start>=-10}">
+                <li <th:if test="${status.index*page.count==page.start}">class="disabled"</th:if>>
                     <a
                             href="?page.start=${status.index*page.count}"
-                            <c:if test="${status.index*page.count==page.start}">class="current"</c:if>
+                            <th:if test="${status.index*page.count==page.start}">class="current"</th:if>
                     >${status.count}</a>
                 </li>
-            </c:if>
-        </c:forEach>
+            </th:if>
+        </th:forEach>
 
-        <li <c:if test="${!page.hasNext}">class="disabled"</c:if>>
+        <li <th:if test="${!page.hasNext}">class="disabled"</th:if>>
             <a href="?page.start=${page.start+page.count}">
                 <span>›</span>
             </a>
         </li>
-        <li <c:if test="${!page.hasNext}">class="disabled"</c:if>>
+        <li <th:if test="${!page.hasNext}">class="disabled"</th:if>>
             <a href="?page.start=${page.last}">
                 <span>»</span>
             </a>
