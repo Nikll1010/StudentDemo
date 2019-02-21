@@ -26,11 +26,18 @@
 
 <!--/*@thymesVar id="name" type="Java"*/-->
 <p th:text="'Hello!!!, ' + ${name} + '!'">3333</p>
+<p th:text="3 - 1 + '!'">3333</p>
+<a th:href="@{/editStudent/(id=1)}">aaa</a>
+<a th:href="@{www.baidu.com}">aaa</a>
+<a th:href="@{/deleteStudent/(id=1)}">aaa</a>
 
 <div class="listDIV">
     <table class="table table-striped table-bordered table-hover table-condensed">
 
-        <caption>学生列表 - 共${page.total}人</caption>
+        <caption >
+        <!--/*@thymesVar id="page" type="java"*/-->
+        <p th:text=" '学生列表  共'+${page.total}+'人'">学生列表</p>
+        </caption>
         <thead>
         <tr class="success">
             <th>学号</th>
@@ -46,60 +53,57 @@
         </thead>
 
         <tbody>
-        <th:forEach items="${students}" var="s" varStatus="status">
-            <tr>
-                <td>${s.student_id}</td>
-                <td>${s.name}</td>
-                <td>${s.age}</td>
-                <td>${s.sex}</td>
-                <td>${s.birthday}</td>
-
-                <td><a href="/editStudent?id=${s.id}"><span class="glyphicon glyphicon-edit"></span> </a></td>
-                <td><a href="/deleteStudent?id=${s.id}"><span class="glyphicon glyphicon-trash"></span> </a></td>
+            <!--/*@thymesVar id="students" type="java"*/-->
+            <tr th:each="s: ${students} ">
+                <td th:text="${s.id}">student_id</td>
+                <td th:text="${s.name}">name</td>
+                <td th:text="${s.age}">age</td>
+                <td th:text="${s.sex}">sex</td>
+                <td th:text="${s.birthday}">birthday</td>
+                <td> <a th:href="@{/editStudent/(id=${s.id})}"><span class="glyphicon glyphicon-edit">编辑</span></a></td>
+                <td> <a th:href="@{/deleteStudent/(id=${s.id})}"><span class="glyphicon glyphicon-trash">删除</span></a></td>
             </tr>
-        </th:forEach>
-
         </tbody>
     </table>
 </div>
 
 <nav class="pageDIV">
-    <ul class="pagination">
-        <li <th:if test="${!page.hasPreviouse}">class="disabled"</th:if>>
-            <a href="?page.start=0">
+        <tr class="pagination">
+        <td  th:if="${!page.hasPreviouse}" th:class="disabled" >
+            <a th:href="${page.start==0}" href="?page.start=0">
                 <span>«</span>
             </a>
-        </li>
+        </td>
 
-        <li <th:if test="${!page.hasPreviouse}">class="disabled"</th:if>>
-            <a href="?page.start=${page.start-page.count}">
+        <!--/*@thymesVar id="page" type="java"*/-->
+        <td th:if="${page.hasPreviouse  }" th:class="disabled">
+            <a th:href="${page.start==(page.start - page.count)}" href="?page.start=${page.start-page.count}">
                 <span>‹</span>
             </a>
-        </li>
+        </td>
 
-        <th:forEach begin="0" end="${page.totalPage-1}" varStatus="status">
+        <td th:each="static :${page.totalPage-1}" varStatus="status">
 
-            <th:if test="${status.count*page.count-page.start<=30 && status.count*page.count-page.start>=-10}">
-                <li <th:if test="${status.index*page.count==page.start}">class="disabled"</th:if>>
-                    <a
-                            href="?page.start=${status.index*page.count}"
-                            <th:if test="${status.index*page.count==page.start}">class="current"</th:if>
-                    >${status.count}</a>
-                </li>
-            </th:if>
-        </th:forEach>
+            <span  th:if ="${(status.count * page.count - page.start) <= 30 && (status.count * page.count - page.start >= 10)}">
+                <span test="${status.index*page.count==page.start}" class="disabled">
+                    <a href="?page.start=${status.index*page.count}"
+                       th:if ="${(status.index * page.count) == page.start}" class="current" th:text="${status.count}">
+                    </a>
+                </span>
+            </span>
+        </td>
 
-        <li <th:if test="${!page.hasNext}">class="disabled"</th:if>>
+        <td th:if ="${!page.hasNext}" class="disabled">
             <a href="?page.start=${page.start+page.count}">
                 <span>›</span>
             </a>
-        </li>
-        <li <th:if test="${!page.hasNext}">class="disabled"</th:if>>
+        </td>
+        <td th:if ="${!page.hasNext}">class="disabled">
             <a href="?page.start=${page.last}">
                 <span>»</span>
             </a>
-        </li>
-    </ul>
+        </td>
+        </tr>
 </nav>
 
 <div class="addDIV">

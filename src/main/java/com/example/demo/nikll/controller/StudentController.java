@@ -9,7 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,13 +34,13 @@ public class StudentController {
         System.out.println("Controller 层的方法调用执行");
     }
     private static final Logger log = LoggerFactory.getLogger(StudentController.class);
+    String name = "jiangbei";
 
     @Autowired
     private StudentService studentService;
 
     @RequestMapping("/name")
     public String hello(Model model) {
-        String name = "jiangbei";
         model.addAttribute("name", name);
         return "listStudent";
     }
@@ -79,7 +81,7 @@ public class StudentController {
 
         // 获取分页参数
         int start = 0;
-        int count = 10;
+        int count = 3;
 
         try {
             start = Integer.parseInt(request.getParameter("page.start"));
@@ -89,13 +91,16 @@ public class StudentController {
 
         Page page = new Page(start, count);
 
-        List<Student> students = studentService.list(page.getStart(), page.getCount());
+        List<Student> students = studentService.list(page.getStart(),page.getCount());
         int total = studentService.getTotal();
+//        System.out.println(total);
         page.setTotal(total);
 
         request.setAttribute("students", students);
+//        System.out.println(students);
         request.setAttribute("page", page);
-
+        request.setAttribute("name", name);
+//
         return "listStudent";
     }
 
